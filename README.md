@@ -1,3 +1,3 @@
 # Solidity
-Starting with smart contracts
+Starting with smart contracts.
 #etherium
