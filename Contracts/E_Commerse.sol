@@ -1,64 +1,52 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.0;
 
-    contract Ecommerse {
-        // A structure to contain multiple data types and entries
-        struct product{
+    contract E_commerse {
+        struct product {
+            string title;
             string desc;
-            uint productID;
-            address payable seller;
-            uint amount;
-            address payable buyer;
-            string title; 
             uint price;
-            bool delivered;
-            uint counter;
+            uint productID;
+            bool deliverd;
+            address payable  buyer;
+            address payable  seller;
         }
 
-        // initialising counter to not have multiple product into same array.
-        uint counter = 1;
+     uint counter = 1;
+     product [] products;
 
-        // A funtion to emmit message opon satisfaction of contract --> Fixing error...
-        event registered (address seller, string  title,  uint productID);
-        event bougt (string  buyer,  uint productID);
-        event deliverd (uint productID);
+     function list(string memory _title , string memory _desc , uint _price ) public  {
+        require(_price > 0, "price should be of valid price");
+        product memory registered ;
 
+        registered.title = _title;
+        registered.desc = _desc;
+        registered.price = _price *10**10;
+        registered.seller = payable(msg.sender);
+        registered.buyer = payable(address(0));
+        registered.deliverd = false;
+        registered.productID = counter;
+        products.push(registered);
+        counter++;
+     }
+
+     function buy(uint _productID) public payable  {
+        require( products[_productID-1].seller != msg.sender , "You are seller can not buy this product");
+        require(msg.value == products[_productID-1].price, "please pay full price");
+        products[_productID-1].buyer = payable(msg.sender);
     
-        // initialising th product arrray. To contaim multiple registered (each-product) item
-        product [] public   products;
+        products[_productID-1].seller.transfer(products[_productID-1].price);
+        products[_productID -1].deliverd = true;
+     }
 
-        // Registering stocks/item with users input
-        function stock( string memory _title, string memory _desc, uint _price) public {
-            require(_price>0, "Price should be a valild amount"); // condition
+     function getAllProducts() public view returns(product[] memory){
+         return products;
+     }
 
-            // pointing to our structure created above
-            product memory each_product;
-
-            // setting values for each_product variables
-            each_product.title = _title;
-            each_product.desc = _desc;
-            each_product.productID = counter;
-            each_product.seller = payable (msg.sender);
-            each_product.price = _price * 10**18;
-            counter++;
-            products.push (each_product);
-            //  emit registered( _title, each_product.productID, msg.sender);
-        }
-
-        // A function to buy items and restric seller from buying.
-        function buy(uint _productID) payable public {
-            require(products[_productID-1].price ==msg.value, "pay exact price");
-            require(products[_productID-1].seller != msg.sender, "pay exact price");
-            products[_productID-1].buyer ==msg.sender;
-            //  emit bougt(, _productID);
-        }
-
-        // A function to make payment by buyer to confirm delivery making chaging to the boolean state 
-        function delivery(uint _productID) public  {
-            require(products[_productID-1].buyer == msg.sender, "only buyer can confirm delivery");
-            products[_productID-1].delivered = true;
-            products[_productID-1].seller.transfer(products[_productID-1].price);
-             emit deliverd(_productID);
-        }
-        }
+     function getProduct(uint _productID) public view returns(product memory){
+        require(_productID > 0 && _productID <= products.length, "Product ID out of range");
+         return products[_productID-1];
+     }
     
+
+    }
