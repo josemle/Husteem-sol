@@ -13,6 +13,18 @@ pragma solidity 0.8.0;
         }
 
      uint counter = 1;
+
+     bool destroyed;
+     modifier protect() {
+         require(!destroyed, "contract is no more valid");
+         _;
+     }
+
+     address payable public   manager ;
+     constructor() payable {
+         manager = payable(msg.sender);
+     }
+
      product [] products;
 
      function list(string memory _title , string memory _desc , uint _price ) public  {
@@ -47,6 +59,19 @@ pragma solidity 0.8.0;
         require(_productID > 0 && _productID <= products.length, "Product ID out of range");
          return products[_productID-1];
      }
+
+     function destroy() public protect{
+        require(msg.sender==manager);
+        manager.transfer(address(this).balance);
+        destroyed=true;
+        // selfdestruct (payable(manager));
+     }
+
+     fallback() external payable {
+        payable (msg.sender).tranfer(msg.value); 
+      }
     
 
     }
+    
+
