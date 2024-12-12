@@ -90,7 +90,7 @@ Contributions are welcome! If you have ideas to improve the repository or spot a
 
 If you have any questions, feel free to reach out:
 - **GitHub:** [Husteem](https://github.com/Husteem)
-- **Email:** [your-email@example.com](mailto:your-email@example.com)
+- **Email:** [your-email@example.com](mailto:muhdnaimhussain@hmail.com)
 
 ## 🔖 License
 
