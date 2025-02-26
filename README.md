@@ -86,11 +86,6 @@ Contributions are welcome! If you have ideas to improve the repository or spot a
 4. Push to your branch: `git push origin feature-name`.
 5. Open a pull request.
 
-## 📧 Contact
-
-If you have any questions, feel free to reach out:
-- **GitHub:** [Husteem](https://github.com/Husteem)
-- **Email:** [your-email@example.com](mailto:muhdnaimhussain@hmail.com)
 
 ## 🔖 License
 
